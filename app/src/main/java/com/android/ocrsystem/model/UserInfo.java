@@ -1,18 +1,61 @@
 package com.android.ocrsystem.model;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
 import java.util.List;
 
+@Entity(tableName = "userinfo")
+@TypeConverters(AllergyListConverter.class)
 public class UserInfo {
-    private String name;
-    private List<Allergy> allergies;
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    private int id;
 
-    public UserInfo(String name, List<Allergy> allergies) {
-        this.name = name;
-        this.allergies = allergies;
+    @ColumnInfo(name = "email")
+    private String email;
+
+    @ColumnInfo(name = "password")
+    private String password;
+
+    @ColumnInfo(name = "name")
+    private String name;
+
+    @ColumnInfo(name = "allergy")
+    private List<Allergy> allergyList;
+
+    @ColumnInfo(name = "created_at")
+    private long createdAt;
+
+    @ColumnInfo(name = "updated_at")
+    private long updatedAt;
+
+//    public UserInfo(String email, String password, String name, ) {
+//
+//    }
+
+    public int getId() {return id;}
+
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public UserInfo() {
-        this("", null);
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getName() {
@@ -23,11 +66,24 @@ public class UserInfo {
         this.name = name;
     }
 
-    public List<Allergy> getAllergies() {
-        return allergies;
+    public List<Allergy> getAllergyList() {return allergyList;}
+
+    public void setAllergyList(List<Allergy> allergyList) {this.allergyList = allergyList;}
+
+    public long getCreatedAt() {
+        return createdAt;
     }
 
-    public void setAllergies(List<Allergy> allergies) {
-        this.allergies = allergies;
+    public void setCreatedAt(long createdAt) {
+        this.createdAt = createdAt;
     }
+
+    public long getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(long updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
 }

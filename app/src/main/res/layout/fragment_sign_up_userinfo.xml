@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="com.android.ocrsystem.viewmodel.AuthViewModel"
+            />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -55,6 +62,7 @@
                 android:id="@+id/signUpNameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@={viewModel.name}"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -75,6 +83,7 @@
                 android:id="@+id/signUpEmailEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@={viewModel.email}"
                 android:inputType="textEmailAddress"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -98,6 +107,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
+                android:text="@={viewModel.password}"
                 />
         </com.google.android.material.textfield.TextInputLayout>
 

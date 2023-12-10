@@ -7,8 +7,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavDirections;
-import androidx.navigation.fragment.NavHostFragment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -45,6 +43,10 @@ public class SignInFragment extends Fragment {
         SignUpButtonEvent();
     }
 
+    /**
+     * NavGraph를 사용하였으나, Java Android 에서는 이상하게 적용이 잘 안되었음.
+     * 해결을 시도하려 하였으나, 빠른 과제 수행을 위해 차라리 transaction을 통해 간단히 구현하는 것을 선택
+     */
     private void SignUpButtonEvent() {
         binding.goToSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,15 +60,13 @@ public class SignInFragment extends Fragment {
         });
     }
 
-
-
     private void SignInButtonEvent() {
         // 로그인 버튼 클릭 이벤트 처리
         binding.signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 사용자의 입력을 기반으로 로그인 시도
-                viewModel.authenticateUser();
+                viewModel.authenticateSignIn();
 
                 // 인증 결과를 observe하여 처리
                 viewModel.getIsAuthenticated().observe(getViewLifecycleOwner(), isAuthenticated -> {
