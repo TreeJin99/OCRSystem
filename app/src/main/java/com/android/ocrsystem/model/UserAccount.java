@@ -1,14 +1,13 @@
 package com.android.ocrsystem.model;
 
-public class User {
+public class UserAccount {
     private String email;
     private String password;
 
-    public User(String email, String password) {
+    public UserAccount(String email, String password) {
         this.email = email;
         this.password = password;
     }
-
 
     public String getEmail() {
         return email;
