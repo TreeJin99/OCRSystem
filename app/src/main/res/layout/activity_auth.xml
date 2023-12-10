@@ -6,15 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.AuthActivity">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:name="com.android.ocrsystem.ui.fragments.SignIn"
+    <fragment
+        android:id="@+id/auth_nav_host_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         app:defaultNavHost="true"
         app:navGraph="@navigation/auth_nav"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
