@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.android.ocrsystem.viewmodel.AuthViewModel"/>
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -37,6 +41,7 @@
             android:hint="@string/sign_in_email"
             android:inputType="textEmailAddress"
             android:singleLine="true"
+            android:text="@={viewModel.email}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/emailTextView" />
@@ -58,6 +63,7 @@
             android:singleLine="true"
             android:inputType="textPassword"
             android:hint="@string/sign_in_password"
+            android:text="@={viewModel.password}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/passwordTextView" />
@@ -80,8 +86,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/sign_up"
+            android:backgroundTint="@color/green"
             android:textSize="12sp"
-            android:textColor="@color/green"
+            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/signInButton" />
 

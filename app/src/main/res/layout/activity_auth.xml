@@ -6,13 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.AuthActivity">
 
-    <fragment
-        android:id="@+id/auth_nav_host_fragment"
+    <FrameLayout
+        android:id="@+id/auth_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/auth_nav"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

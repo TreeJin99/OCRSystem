@@ -1,6 +1,12 @@
 package com.android.ocrsystem.model;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class UserAccount {
+    @PrimaryKey(autoGenerate = true)
+    private int id;
     private String email;
     private String password;
 
@@ -8,6 +14,10 @@ public class UserAccount {
         this.email = email;
         this.password = password;
     }
+
+    public int getId() { return id; }
+
+    public void setId(int id) {this.id = id;}
 
     public String getEmail() {
         return email;

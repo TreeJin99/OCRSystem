@@ -1,4 +1,10 @@
 package com.android.ocrsystem.database;
 
-public class AuthDatabase {
+import androidx.room.Database;
+import androidx.room.RoomDatabase;
+
+import com.android.ocrsystem.model.UserAccount;
+
+@Database(entities = {UserAccount.class}, version = 1)
+public abstract class AuthDatabase extends RoomDatabase {
 }

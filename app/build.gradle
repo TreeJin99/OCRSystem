@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
 }
 
+
 android {
     namespace 'com.android.ocrsystem'
     compileSdk 34
