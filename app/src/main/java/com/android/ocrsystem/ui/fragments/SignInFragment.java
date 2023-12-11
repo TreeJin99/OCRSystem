@@ -1,5 +1,6 @@
 package com.android.ocrsystem.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.android.ocrsystem.R;
 import com.android.ocrsystem.databinding.FragmentSignInBinding;
+import com.android.ocrsystem.ui.activities.MainActivity;
 import com.android.ocrsystem.viewmodel.AuthViewModel;
 
 public class SignInFragment extends Fragment {
@@ -70,7 +72,11 @@ public class SignInFragment extends Fragment {
                     if (isAuthenticated) {
                         // 인증 성공
                         Toast.makeText(requireContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
-                        // TODO: 로그인 성공 후 수행할 동작 추가
+                        // 새로운 액티비티 시작
+                        Intent intent = new Intent(requireContext(), MainActivity.class); // YourNewActivity에는 새로 시작할 액티비티 클래스를 넣어주세요
+                        startActivity(intent);
+                        requireActivity().finish();
+
                     } else {
                         // 인증 실패
                         Toast.makeText(requireContext(), "로그인 실패", Toast.LENGTH_SHORT).show();
