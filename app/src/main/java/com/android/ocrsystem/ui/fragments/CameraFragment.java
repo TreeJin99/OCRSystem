@@ -1,11 +1,16 @@
 package com.android.ocrsystem.ui.fragments;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaActionSound;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +36,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -96,11 +102,11 @@ public class CameraFragment extends Fragment {
                 // Unbind use cases before rebinding
                 cameraProvider.unbindAll();
 
-                // Bind use cases to camera
-                Camera camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview);
-
                 // Initialize ImageCapture here
                 imageCapture = new ImageCapture.Builder().build();
+
+                // Bind use cases to camera
+                Camera camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture);
 
             } catch (Exception e) {
                 Log.e("CameraFragment", "Error starting camera", e);
@@ -114,31 +120,34 @@ public class CameraFragment extends Fragment {
             return;
         }
 
-        // 이미지 파일 생성
+        /*// 이미지 파일 생성
         File photoFile = createImageFile();
 
         // 이미지 저장 옵션 설정
         ImageCapture.OutputFileOptions outputOptions =
-                new ImageCapture.OutputFileOptions.Builder(photoFile).build();
+                new ImageCapture.OutputFileOptions.Builder(photoFile).build();*/
+
+        ImageCapture.OutputFileOptions outputFileOptions = new ImageCapture.OutputFileOptions.Builder(
+                requireContext().getContentResolver(),
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                getCurrentFileName()
+        ).build();
 
         // Take a picture
         try {
             imageCapture.takePicture(
-                    outputOptions, cameraExecutor, new ImageCapture.OnImageSavedCallback() {
+                    outputFileOptions, cameraExecutor, new ImageCapture.OnImageSavedCallback() {
                         @Override
                         public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
                             // 이미지 캡처 동작이 완료된 후에 촬영 소리 재생
                             MediaActionSound sound = new MediaActionSound();
                             sound.play(MediaActionSound.SHUTTER_CLICK);
 
-                            // 이미지 디코딩
-                            Bitmap bitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                            /*// 이미지 디코딩
+                            Bitmap bitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());*/
+                            Bitmap bitmap = getBitmapFromImageUri(outputFileResults.getSavedUri());
 
-                            // 이미지를 비트맵으로 변환하여 ImageView에 표시
-                            previewImageView.setImageBitmap(bitmap);
-
-                            // ImageView를 보이게 설정
-                            previewImageView.setVisibility(View.VISIBLE);
+                            setBitmapToImageView(bitmap);
                         }
 
                         @Override
@@ -152,7 +161,7 @@ public class CameraFragment extends Fragment {
         }
     }
 
-    private File createImageFile() {
+    /*private File createImageFile() {
         // 파일 이름에 타임스탬프를 추가하여 중복을 방지
         String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String imageFileName = "JPEG_" + timestamp + "_";
@@ -165,7 +174,7 @@ public class CameraFragment extends Fragment {
             Log.e("CameraFragment", "Error creating image file", e);
             return null;
         }
-    }
+    }*/
 
     private boolean allPermissionsGranted() {
         for (String permission : REQUIRED_PERMISSIONS) {
@@ -175,5 +184,57 @@ public class CameraFragment extends Fragment {
             }
         }
         return true;
+    }
+
+    private void setBitmapToImageView(Bitmap bitmap) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // 이미지를 비트맵으로 변환하여 ImageView에 표시
+                previewImageView.setImageBitmap(bitmap);
+
+                // ImageView를 보이게 설정
+                previewImageView.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    private ContentValues getCurrentFileName() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
+        String name = sdf.format(System.currentTimeMillis());
+
+        ContentValues currentFileContentValues = new ContentValues();
+        currentFileContentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, name);
+        currentFileContentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
+        currentFileContentValues.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/HealthC");
+
+        return currentFileContentValues;
+    }
+
+    private Bitmap getBitmapFromImageUri(Uri uri) {
+        ContentResolver contentResolver = getContext().getContentResolver();
+        InputStream input = null;
+        try {
+            // Uri에서 InputStream을 열기
+            input = contentResolver.openInputStream(uri);
+
+            // BitmapFactory를 사용하여 InputStream에서 비트맵을 만듭니다.
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = false;
+
+            Bitmap bitmap = BitmapFactory.decodeStream(input, null, options);
+            return bitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
     }
 }

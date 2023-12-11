@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.android.ocrsystem.R;
 import com.android.ocrsystem.databinding.FragmentSignInBinding;
+import com.android.ocrsystem.ui.activities.ImagePickActivity;
 import com.android.ocrsystem.ui.activities.MainActivity;
 import com.android.ocrsystem.viewmodel.AuthViewModel;
 
