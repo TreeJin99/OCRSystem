@@ -77,6 +77,7 @@ public class SignInFragment extends Fragment {
                         startActivity(intent);
                         requireActivity().finish();
 
+
                     } else {
                         // 인증 실패
                         Toast.makeText(requireContext(), "로그인 실패", Toast.LENGTH_SHORT).show();

@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="@string/email"
+            android:text="@string/nickname"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/signInTextView" />
@@ -38,7 +38,7 @@
             android:id="@+id/emailEditTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/sign_in_email"
+            android:hint="@string/sign_in_nickname"
             android:inputType="textEmailAddress"
             android:singleLine="true"
             android:text="@={userinfo.email}"

@@ -2,7 +2,7 @@
     <string name="app_name">HealthC</string>
     <string name="sign_up_title">회원가입</string>
     <string name="sign_up_content">회원등록을 위해 정보를 입력해주세요.</string>
-    <string name="sign_up_email">사용할 이메일을\n입력해주세요.</string>
+    <string name="sign_up_nickname">사용할 닉네임을\n입력해주세요.</string>
     <string name="sign_up_password">사용할 비밀번호를\n입력해주세요.</string>
     <string name="sign_up_info">갖고있는 알레르기가 있다면\n선택해주세요.</string>
     <string name="splash_string">영양성분을 분석하는 스마트 돋보기 헬씨</string>
@@ -11,14 +11,14 @@
     <string name="sign_out">로그아웃</string>
     <string name="next">다음</string>
     <string name="done">완료</string>
-    <string name="hint_email">이메일 입력</string>
+    <string name="hint_nickname">닉네임 입력</string>
     <string name="hint_password">비밀번호 입력</string>
     <string name="hint_name">이름 입력</string>
     <string name="hint_info">알레르기를 유발할 수 있는 성분을 가진 음식을 알려드릴게요!</string>
     <string name="sign_in_healthc">스마트 돋보기 헬씨에\n오신걸 환영해요!</string>
-    <string name="sign_in_email">이메일을 입력하세요.</string>
+    <string name="sign_in_nickname">닉네임을 입력하세요.</string>
     <string name="sign_in_password">비밀번호를 입력하세요.</string>
-    <string name="email">이메일</string>
+    <string name="nickname">닉네임</string>
     <string name="password">비밀번호</string>
     <string name="soyBean">대두</string>
     <string name="peanuts">땅콩</string>

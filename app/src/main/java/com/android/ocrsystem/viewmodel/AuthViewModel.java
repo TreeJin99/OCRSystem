@@ -41,7 +41,18 @@ public class AuthViewModel extends AndroidViewModel {
     }
 
     public void isSignIn(String email, String password) {
+        // 테스트용 계정
+        UserInfo testInfo = new UserInfo("테스트", "test", "12345678", null);
+
         executor.submit(() -> {
+            if (authDao == null) {
+                // authDao가 null인 경우 다시 초기화
+                AppDatabase db = AppDatabase.getInstance(getApplication());
+                authDao = db.userInfoDao();
+            }
+            authDao.createUser(testInfo);
+
+
             UserInfo userInfo = authDao.getSignIn(email, password);
             boolean isAuthenticateSignIn = userInfo != null;
             isAuthenticated.postValue(isAuthenticateSignIn);

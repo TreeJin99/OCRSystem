@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.android.ocrsystem.R;
-import com.android.ocrsystem.ui.fragments.MainFragment;
+import com.android.ocrsystem.ui.fragments.CameraFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment_container, new MainFragment())
+                    .replace(R.id.main_fragment_container, new CameraFragment())
                     .commit();
         }
     }
