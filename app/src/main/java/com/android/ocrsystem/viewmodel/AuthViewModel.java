@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.android.ocrsystem.database.AppDatabase;
 import com.android.ocrsystem.model.UserInfo;
 import com.android.ocrsystem.model.dao.AuthDao;
-import com.android.ocrsystem.model.validator.AuthValidator;
+import com.android.ocrsystem.util.validator.AuthValidator;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

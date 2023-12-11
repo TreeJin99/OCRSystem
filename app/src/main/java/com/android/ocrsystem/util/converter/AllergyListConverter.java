@@ -1,4 +1,4 @@
-package com.android.ocrsystem.model.converter;
+package com.android.ocrsystem.util.converter;
 import androidx.room.TypeConverter;
 
 import java.util.Arrays;

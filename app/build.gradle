@@ -2,7 +2,6 @@ plugins {
     id 'com.android.application'
 }
 
-
 android {
     namespace 'com.android.ocrsystem'
     compileSdk 34
@@ -72,5 +71,4 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
     implementation 'androidx.activity:activity:1.7.0'
-
 }

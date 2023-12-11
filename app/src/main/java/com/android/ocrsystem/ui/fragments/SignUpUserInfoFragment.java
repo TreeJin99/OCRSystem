@@ -1,7 +1,6 @@
 package com.android.ocrsystem.ui.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.android.ocrsystem.R;
 import com.android.ocrsystem.databinding.FragmentSignUpUserinfoBinding;
-import com.android.ocrsystem.model.validator.AuthValidator;
+import com.android.ocrsystem.util.validator.AuthValidator;
 import com.android.ocrsystem.viewmodel.AuthViewModel;
 
 public class SignUpUserInfoFragment extends Fragment {

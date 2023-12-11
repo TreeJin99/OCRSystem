@@ -5,7 +5,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
-import com.android.ocrsystem.model.converter.AllergyListConverter;
+import com.android.ocrsystem.util.converter.AllergyListConverter;
 import java.util.List;
 
 @TypeConverters(AllergyListConverter.class)

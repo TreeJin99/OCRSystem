@@ -23,12 +23,23 @@
 
        <Button
            android:id="@+id/imagePickButton"
-           app:layout_constraintTop_toBottomOf="@id/gallery_Imageview"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:text="사진 선택"
            app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintEnd_toStartOf="@id/ocrButton"
+           app:layout_constraintTop_toBottomOf="@id/gallery_Imageview"
+
+           />
+
+       <Button
+           android:id="@+id/ocrButton"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="사진 분석"
+           app:layout_constraintStart_toEndOf="@id/imagePickButton"
            app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintTop_toTopOf="@id/imagePickButton"
            />
 
        <TextView

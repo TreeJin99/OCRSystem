@@ -1,5 +1,6 @@
 package com.android.ocrsystem.ui.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -50,4 +51,5 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
     }
+
 }

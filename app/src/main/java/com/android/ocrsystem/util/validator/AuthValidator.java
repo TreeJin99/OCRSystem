@@ -1,4 +1,4 @@
-package com.android.ocrsystem.model.validator;
+package com.android.ocrsystem.util.validator;
 
 public class AuthValidator {
 

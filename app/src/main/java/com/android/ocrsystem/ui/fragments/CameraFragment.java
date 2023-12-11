@@ -7,9 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaActionSound;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,7 +24,6 @@ import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageCaptureException;
 import androidx.camera.core.Preview;
-
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
@@ -34,7 +32,6 @@ import androidx.fragment.app.Fragment;
 import com.android.ocrsystem.R;
 import com.google.common.util.concurrent.ListenableFuture;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -120,18 +117,7 @@ public class CameraFragment extends Fragment {
             return;
         }
 
-        /*// 이미지 파일 생성
-        File photoFile = createImageFile();
-
-        // 이미지 저장 옵션 설정
-        ImageCapture.OutputFileOptions outputOptions =
-                new ImageCapture.OutputFileOptions.Builder(photoFile).build();*/
-
-        ImageCapture.OutputFileOptions outputFileOptions = new ImageCapture.OutputFileOptions.Builder(
-                requireContext().getContentResolver(),
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                getCurrentFileName()
-        ).build();
+        ImageCapture.OutputFileOptions outputFileOptions = createOutputFileOptions();
 
         // Take a picture
         try {
@@ -139,42 +125,23 @@ public class CameraFragment extends Fragment {
                     outputFileOptions, cameraExecutor, new ImageCapture.OnImageSavedCallback() {
                         @Override
                         public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
-                            // 이미지 캡처 동작이 완료된 후에 촬영 소리 재생
-                            MediaActionSound sound = new MediaActionSound();
-                            sound.play(MediaActionSound.SHUTTER_CLICK);
-
-                            /*// 이미지 디코딩
-                            Bitmap bitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());*/
+                            playShutterSound();
                             Bitmap bitmap = getBitmapFromImageUri(outputFileResults.getSavedUri());
-
                             setBitmapToImageView(bitmap);
                         }
 
                         @Override
                         public void onError(@NonNull ImageCaptureException exception) {
                             Log.e("CameraFragment", "Error capturing image", exception);
+                            showToast("Error capturing image");
                         }
                     }
             );
         } catch (Exception e) {
             Log.e("CameraFragment", "Error taking picture", e);
+            showToast("Error taking picture");
         }
     }
-
-    /*private File createImageFile() {
-        // 파일 이름에 타임스탬프를 추가하여 중복을 방지
-        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        String imageFileName = "JPEG_" + timestamp + "_";
-        File storageDir = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-
-        try {
-            // 파일 생성
-            return File.createTempFile(imageFileName, ".jpg", storageDir);
-        } catch (IOException e) {
-            Log.e("CameraFragment", "Error creating image file", e);
-            return null;
-        }
-    }*/
 
     private boolean allPermissionsGranted() {
         for (String permission : REQUIRED_PERMISSIONS) {
@@ -186,54 +153,53 @@ public class CameraFragment extends Fragment {
         return true;
     }
 
-    private void setBitmapToImageView(Bitmap bitmap) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                // 이미지를 비트맵으로 변환하여 ImageView에 표시
-                previewImageView.setImageBitmap(bitmap);
+    private ImageCapture.OutputFileOptions createOutputFileOptions() {
+        ContentValues contentValues = getCurrentFileName();
+        contentValues.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/HealthC");
 
-                // ImageView를 보이게 설정
-                previewImageView.setVisibility(View.VISIBLE);
-            }
+        return new ImageCapture.OutputFileOptions.Builder(
+                requireContext().getContentResolver(),
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                contentValues
+        ).build();
+    }
+
+    private void playShutterSound() {
+        MediaActionSound sound = new MediaActionSound();
+        sound.play(MediaActionSound.SHUTTER_CLICK);
+    }
+
+    private void setBitmapToImageView(Bitmap bitmap) {
+        getActivity().runOnUiThread(() -> {
+            previewImageView.setImageBitmap(bitmap);
+            previewImageView.setVisibility(View.VISIBLE);
         });
+    }
+
+    private void showToast(String message) {
+        getActivity().runOnUiThread(() -> Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show());
     }
 
     private ContentValues getCurrentFileName() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
-        String name = sdf.format(System.currentTimeMillis());
+        String name = sdf.format(new Date());
 
         ContentValues currentFileContentValues = new ContentValues();
         currentFileContentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, name);
         currentFileContentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
-        currentFileContentValues.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/HealthC");
 
         return currentFileContentValues;
     }
 
     private Bitmap getBitmapFromImageUri(Uri uri) {
         ContentResolver contentResolver = getContext().getContentResolver();
-        InputStream input = null;
-        try {
-            // Uri에서 InputStream을 열기
-            input = contentResolver.openInputStream(uri);
-
-            // BitmapFactory를 사용하여 InputStream에서 비트맵을 만듭니다.
+        try (InputStream input = contentResolver.openInputStream(uri)) {
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = false;
 
-            Bitmap bitmap = BitmapFactory.decodeStream(input, null, options);
-            return bitmap;
+            return BitmapFactory.decodeStream(input, null, options);
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
         return null;
     }
