@@ -7,6 +7,8 @@ public class Allergy {
         this.allergy = allergy;
     }
 
+
+
     public Allergy() {
         this("");
     }

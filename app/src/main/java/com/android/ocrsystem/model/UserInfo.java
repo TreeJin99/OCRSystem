@@ -6,11 +6,10 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import com.android.ocrsystem.model.converter.AllergyListConverter;
-
 import java.util.List;
 
-@Entity(tableName = "userinfo")
 @TypeConverters(AllergyListConverter.class)
+@Entity(tableName = "userinfo")
 public class UserInfo {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
@@ -26,12 +25,16 @@ public class UserInfo {
     private String name;
 
     @ColumnInfo(name = "allergy")
-    private List<Allergy> allergyList;
+    private List<String> allergyList;
 
     @ColumnInfo(name = "created_at")
     private long createdAt;
 
-    public UserInfo() {
+    public UserInfo(String name, String email, String password, List<String> allergyList) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.allergyList = allergyList;
         this.createdAt = System.currentTimeMillis();
     }
 
@@ -67,14 +70,6 @@ public class UserInfo {
         this.name = name;
     }
 
-    public List<Allergy> getAllergyList() {
-        return allergyList;
-    }
-
-    public void setAllergyList(List<Allergy> allergyList) {
-        this.allergyList = allergyList;
-    }
-
     public long getCreatedAt() {
         return createdAt;
     }
@@ -82,4 +77,25 @@ public class UserInfo {
     public void setCreatedAt(long createdAt) {
         this.createdAt = createdAt;
     }
+
+    public List<String> getAllergyList() {
+        return allergyList;
+    }
+
+    public void setAllergyList(List<String> allergyList) {
+        this.allergyList = allergyList;
+    }
+
+    @Override
+    public String toString() {
+        return "UserInfo{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", allergyList=" + allergyList +
+                ", createdAt=" + createdAt +
+                '}';
+    }
+
 }

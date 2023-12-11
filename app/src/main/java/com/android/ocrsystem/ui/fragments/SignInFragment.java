@@ -25,7 +25,7 @@ public class SignInFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_in, container, false);
-        viewModel = new ViewModelProvider(requireActivity()).get(AuthViewModel.class);
+        viewModel = new ViewModelProvider(this).get(AuthViewModel.class);
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
         return binding.getRoot();

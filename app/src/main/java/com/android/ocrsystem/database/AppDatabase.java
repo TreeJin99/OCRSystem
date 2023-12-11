@@ -7,7 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.android.ocrsystem.model.UserInfo;
-import com.android.ocrsystem.model.dao.UserInfoDao;
+import com.android.ocrsystem.model.dao.AuthDao;
 
 @Database(entities = {UserInfo.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
@@ -15,7 +15,7 @@ public abstract class AppDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "ocr_system_db";
     private static volatile AppDatabase instance;
 
-    public abstract UserInfoDao userInfoDao();
+    public abstract AuthDao userInfoDao();
 
     public static synchronized AppDatabase getInstance(Context context) {
         if (instance == null) {

@@ -1,21 +1,28 @@
 package com.android.ocrsystem.viewmodel;
 
-
+import android.app.Application;
 import android.util.Log;
 
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
-
-import com.android.ocrsystem.model.Allergy;
+import com.android.ocrsystem.database.AppDatabase;
 import com.android.ocrsystem.model.UserInfo;
+import com.android.ocrsystem.model.dao.AuthDao;
 import com.android.ocrsystem.model.validator.AuthValidator;
-
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class AuthViewModel extends ViewModel {
-    // 비동기
+public class AuthViewModel extends AndroidViewModel {
+    private AuthDao authDao;
+
+    public AuthViewModel(Application application) {
+        super(application);
+        AppDatabase db = AppDatabase.getInstance(application);
+        authDao = db.userInfoDao();
+        isAuthenticated.setValue(false);
+    }
+
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     // 인증 상태 관찰자
@@ -28,33 +35,38 @@ public class AuthViewModel extends ViewModel {
     public MutableLiveData<String> email = new MutableLiveData<>();
     public MutableLiveData<String> password = new MutableLiveData<>();
     private MutableLiveData<List<String>> allergies = new MutableLiveData<>();
+
     public void setAllergies(List<String> newAllergies) {
         allergies.setValue(newAllergies);
     }
 
-    // 생성자
-    public AuthViewModel() {
-        isAuthenticated.setValue(false);
-    }
-
     public void isSignIn(String email, String password) {
-        // 사용자 입력 유효성 검사 (여기에 더 많은 유효성 검사 로직을 추가할 수 있음)
-
-        boolean isAuthenticateSignIn = authValidator.authenticateSignIn(email, password);
-        isAuthenticated.setValue(isAuthenticateSignIn);
-
-
+        executor.submit(() -> {
+            UserInfo userInfo = authDao.getSignIn(email, password);
+            boolean isAuthenticateSignIn = userInfo != null;
+            isAuthenticated.postValue(isAuthenticateSignIn);
+        });
     }
 
-    public void isSignUp(){
+    public void isSignUp() {
         executor.submit(() -> {
             try {
-            } catch (Exception e){
+                List<String> allergiesList = allergies.getValue();
+                UserInfo userInfo = new UserInfo(name.getValue(), email.getValue(), password.getValue(), allergiesList);
+                Log.d("회원가입", allergies.getValue().toString());
+                Log.d("회원가입", userInfo.toString());
+                if (authDao == null) {
+                    // authDao가 null인 경우 다시 초기화
+                    AppDatabase db = AppDatabase.getInstance(getApplication());
+                    authDao = db.userInfoDao();
+                }
+
+                authDao.createUser(userInfo);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         });
     }
-
 
     public MutableLiveData<Boolean> getIsAuthenticated() {
         return isAuthenticated;
@@ -63,5 +75,4 @@ public class AuthViewModel extends ViewModel {
     public void setIsAuthenticated(MutableLiveData<Boolean> isAuthenticated) {
         this.isAuthenticated = isAuthenticated;
     }
-
 }
