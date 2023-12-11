@@ -27,7 +27,7 @@ public class SignUpAllergyFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentSignUpAllergyBinding.inflate(inflater, container, false);
-        viewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(AuthViewModel.class);
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
         return binding.getRoot();

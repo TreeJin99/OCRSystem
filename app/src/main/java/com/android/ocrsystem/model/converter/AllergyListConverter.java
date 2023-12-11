@@ -1,4 +1,4 @@
-package com.android.ocrsystem.model;
+package com.android.ocrsystem.model.converter;
 
 // AllergyListConverter.java
 

@@ -5,6 +5,8 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
+import com.android.ocrsystem.model.converter.AllergyListConverter;
+
 import java.util.List;
 
 @Entity(tableName = "userinfo")
@@ -29,14 +31,13 @@ public class UserInfo {
     @ColumnInfo(name = "created_at")
     private long createdAt;
 
-    @ColumnInfo(name = "updated_at")
-    private long updatedAt;
+    public UserInfo() {
+        this.createdAt = System.currentTimeMillis();
+    }
 
-//    public UserInfo(String email, String password, String name, ) {
-//
-//    }
-
-    public int getId() {return id;}
+    public int getId() {
+        return id;
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -66,9 +67,13 @@ public class UserInfo {
         this.name = name;
     }
 
-    public List<Allergy> getAllergyList() {return allergyList;}
+    public List<Allergy> getAllergyList() {
+        return allergyList;
+    }
 
-    public void setAllergyList(List<Allergy> allergyList) {this.allergyList = allergyList;}
+    public void setAllergyList(List<Allergy> allergyList) {
+        this.allergyList = allergyList;
+    }
 
     public long getCreatedAt() {
         return createdAt;
@@ -77,13 +82,4 @@ public class UserInfo {
     public void setCreatedAt(long createdAt) {
         this.createdAt = createdAt;
     }
-
-    public long getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(long updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
 }

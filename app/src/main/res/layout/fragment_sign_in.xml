@@ -4,8 +4,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
-            name="viewModel"
-            type="com.android.ocrsystem.viewmodel.AuthViewModel"/>
+            name="userinfo"
+            type="com.android.ocrsystem.model.UserInfo"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -41,7 +41,7 @@
             android:hint="@string/sign_in_email"
             android:inputType="textEmailAddress"
             android:singleLine="true"
-            android:text="@={viewModel.email}"
+            android:text="@={userinfo.email}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/emailTextView" />
@@ -63,7 +63,7 @@
             android:singleLine="true"
             android:inputType="textPassword"
             android:hint="@string/sign_in_password"
-            android:text="@={viewModel.password}"
+            android:text="@={userinfo.password}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/passwordTextView" />

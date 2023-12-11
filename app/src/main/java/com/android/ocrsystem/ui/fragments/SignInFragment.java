@@ -19,18 +19,13 @@ import com.android.ocrsystem.databinding.FragmentSignInBinding;
 import com.android.ocrsystem.viewmodel.AuthViewModel;
 
 public class SignInFragment extends Fragment {
-
     private FragmentSignInBinding binding;
     private AuthViewModel viewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_in, container, false);
-
-        // AuthViewModel 초기화
-        viewModel = new ViewModelProvider(this).get(AuthViewModel.class);
-
-        binding.setViewModel(viewModel);
+        viewModel = new ViewModelProvider(requireActivity()).get(AuthViewModel.class);
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
         return binding.getRoot();
@@ -66,7 +61,9 @@ public class SignInFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // 사용자의 입력을 기반으로 로그인 시도
-                viewModel.authenticateSignIn();
+                String email = binding.emailEditTextView.getText().toString();
+                String password = binding.passwordEditText.getText().toString();
+                viewModel.isSignIn(email, password);
 
                 // 인증 결과를 observe하여 처리
                 viewModel.getIsAuthenticated().observe(getViewLifecycleOwner(), isAuthenticated -> {
